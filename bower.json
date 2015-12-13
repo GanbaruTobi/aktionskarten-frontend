@@ -12,7 +12,8 @@
   "private": true,
   "dependencies": {
     "angular": "~1.4.7",
-    "ui-leaflet": "~1.0.0"
+    "ui-leaflet": "~1.0.0",
+    "bootstrap": "~3.3.5"
   },
   "ignore": [
     "**/.*",
