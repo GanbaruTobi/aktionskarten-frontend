@@ -1,0 +1,25 @@
+{
+  "name": "aktionskarten-frontend",
+  "authors": [
+    "Fup Duck <fupduck@sacknagel.com>",
+    "Nico Geyso <nico.geyso@fu-berlin.de>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "",
+  "homepage": "https://github.com/KartographischeAktion/aktionskarten-frontend",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.7",
+    "ui-leaflet": "~1.0.0"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
+
