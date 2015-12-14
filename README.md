@@ -3,6 +3,12 @@
 Frontend for aktionskarten-backend
 
 Install dependencies
+```
+$ pacman -S bower
+$ bower install
+```
 
-  $ pacman -S bower
-  $ bower install ui-leaflet ui-route
+Start Server
+```
+$ python -m http.server
+```
