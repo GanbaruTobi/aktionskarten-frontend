@@ -1,3 +1,5 @@
+'use strict';
+
 mapApp.directive('center', function() {
   return {
     restrict: 'AE',

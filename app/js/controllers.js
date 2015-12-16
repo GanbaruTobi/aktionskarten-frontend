@@ -1,3 +1,5 @@
+'use strict';
+
 mapApp.controller('MainController', function ($scope) {
 
   // else use London as center

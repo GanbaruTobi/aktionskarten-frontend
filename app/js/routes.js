@@ -1,3 +1,4 @@
+'use strict';
 
 mapApp.config(function($stateProvider, $urlRouterProvider) {
   //

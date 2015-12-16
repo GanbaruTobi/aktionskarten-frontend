@@ -1,3 +1,5 @@
+'use strict';
+
 mapApp
   .constant('protocol', 'http')
   .constant('domain', 'localhost')
