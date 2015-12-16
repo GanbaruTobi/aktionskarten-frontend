@@ -1,6 +1,6 @@
 'use strict';
 
-mapApp.controller('MainController', function ($scope) {
+mapApp.controller('MainController', ["$scope", function ($scope) {
 
   // else use London as center
   $scope.center = {
@@ -20,21 +20,25 @@ mapApp.controller('MainController', function ($scope) {
       });
     });
   };
-});
+}]);
 
-mapApp.controller('MapController', function ($scope,  SETTINGS, $stateParams, leafletData, $http) {
-  name = $stateParams.name
+mapApp.controller('MapController',
+  ["$scope", "SETTINGS", "$stateParams", "leafletData", "$http",
+    function ($scope,  SETTINGS, $stateParams, leafletData, $http) {
+      name = $stateParams.name
 
-    $http.get(SETTINGS.backendUrl+name).then(function(result){
-        
-        angular.extend($scope, {
-          center: {
-            lat: result.data.geometry.coordinates[0][0][0],
-            lng: result.data.geometry.coordinates[0][0][1],
-            zoom: 12
-          }
-        });
-      
-      $scope.data = result.data.geometry
-  });
-});
+        $http.get(SETTINGS.backendUrl+name).then(function(result){
+            
+            angular.extend($scope, {
+              center: {
+                lat: result.data.geometry.coordinates[0][0][0],
+                lng: result.data.geometry.coordinates[0][0][1],
+                zoom: 12
+              }
+            });
+          
+          $scope.data = result.data.geometry
+      });
+    }
+  ]
+);
