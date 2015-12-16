@@ -2,6 +2,6 @@ mapApp.directive('center', function() {
   return {
     restrict: 'AE',
     transclude: true,
-    templateUrl: 'components/default/center.html'
+    templateUrl: 'partials/center.html'
   };
 });

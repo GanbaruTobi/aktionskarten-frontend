@@ -8,22 +8,22 @@ mapApp.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
   .state('home', {
     url: "/",
-    templateUrl: "components/home/homeView.html"
+    templateUrl: "partials/home.html"
   })
   .state('map', {
     url: "/:name/",
-    templateUrl: "components/map/mapView.html"
+    templateUrl: "partials/map.html"
   })
   .state('boundaries', {
     url: "/:name/boundaries",
-    templateUrl: "components/map/mapView.html"
+    templateUrl: "partials/map.html"
   })
   .state('map2', {
     url: "/:name/",
-    templateUrl: "components/map/mapView.html"
+    templateUrl: "partials/map.html"
   })
   .state('map3', {
     url: "/:name/",
-    templateUrl: "components/map/mapView.html"
+    templateUrl: "partials/map.html"
   });
 });
