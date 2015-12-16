@@ -8,6 +8,7 @@ mapApp.controller('MainController', ["$scope", function ($scope) {
     lng: -0.09,
     zoom: 12
   };
+
   // try to get location of user to center map
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position){
@@ -27,17 +28,15 @@ mapApp.controller('MapController',
     function ($scope,  SETTINGS, $stateParams, leafletData, $http) {
       name = $stateParams.name
 
-        $http.get(SETTINGS.backendUrl+name).then(function(result){
-            
-            angular.extend($scope, {
-              center: {
-                lat: result.data.geometry.coordinates[0][0][0],
-                lng: result.data.geometry.coordinates[0][0][1],
-                zoom: 12
-              }
-            });
-          
-          $scope.data = result.data.geometry
+      $http.get(SETTINGS.backendUrl+name).success(function(data){
+        console.log(data);
+        $scope.center = {
+          lat: data.geometry.coordinates[0][0][1],
+          lng: data.geometry.coordinates[0][0][0],
+          zoom: 12
+        }
+
+        $scope.data = data.geometry
       });
     }
   ]
