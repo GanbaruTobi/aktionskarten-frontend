@@ -24,30 +24,24 @@ mapApp.controller('MainController', ["$scope", function ($scope) {
 }]);
 
 mapApp.controller('MapController',
-  ["$scope", "$http", "SETTINGS", "$stateParams", "leafletData",
-    function ($scope, $http, SETTINGS, $stateParams, leafletData) {
+  ["$scope", "$http", "api", "$stateParams", "leafletData",
+    function ($scope, $http, api, $stateParams, leafletData) {
       var name = $stateParams.name;
-      var url = SETTINGS.backendUrl+name;
+      api.getMap(name, function(data) {
+        angular.extend($scope, {
+          center: {
+                lat: data.geometry.coordinates[0][0][1],
+                lng: data.geometry.coordinates[0][0][0],
+                zoom: 12
+          }
+        })
+      });
 
-      if (name) {
-        $http.get(url).success(function(data){
-          angular.extend($scope, {
-            center: {
-                  lat: data.geometry.coordinates[0][0][1],
-                  lng: data.geometry.coordinates[0][0][0],
-                  zoom: 12
-            }
-          })
-        });
-
-        url += '/features';
-        console.log(url);
-        $http.get(url).success(function(data){
-          angular.extend($scope, {
-              geojson: { data : data }
-          })
-        });
-      }
+      api.getFeaturesForMap(name, function(data) {
+        angular.extend($scope, {
+            geojson: { data : data }
+        })
+      });
     }
   ]
 );
