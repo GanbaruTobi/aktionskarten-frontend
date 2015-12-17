@@ -2,11 +2,10 @@
 
 mapApp.config(["$stateProvider", "$urlRouterProvider",
     function($stateProvider, $urlRouterProvider) {
-      //
-      // For any unmatched url, redirect to /state1
+      // For any unmatched url, redirect to /
       $urlRouterProvider.otherwise("/");
-      //
-      // Now set up the states
+
+      // routes for app
       $stateProvider
       .state('home', {
         url: "/",
