@@ -1,8 +1,5 @@
 'use strict';
 
-mapApp.controller('MainController', ["$scope", function ($scope) {
-}]);
-
 mapApp.controller('MapController',
   ["$scope", "api", "defaults", "$stateParams", "leafletData",
     function ($scope, api, defaults, $stateParams, leafletData) {
