@@ -1,6 +1,6 @@
 'use strict';
 
-mapApp.controller('MapController',
+mapApp.controller('MapCtrl',
   ["$scope", "api", "defaults", "$stateParams", "leafletData",
     function ($scope, api, defaults, $stateParams, leafletData) {
       var name = $stateParams.name;
