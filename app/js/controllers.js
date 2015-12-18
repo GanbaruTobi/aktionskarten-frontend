@@ -33,13 +33,12 @@ mapApp.controller('MapCtrl',
         $scope.name = name;
         // Load map
         api.getMap(name).success(function(data) {
-          angular.extend($scope, {
-            center: {
-              lat: data.geometry.coordinates[0][0][1],
-              lng: data.geometry.coordinates[0][0][0],
-              zoom: 11
-            }
-          })
+          // center map by calculating center of bbox
+          var centerPt = turf.center(data);
+          angular.extend($scope.center, {
+              lng: centerPt.geometry.coordinates[0],
+              lat: centerPt.geometry.coordinates[1]
+          });
         });
 
         // Load features for map
