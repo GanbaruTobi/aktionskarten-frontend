@@ -13,8 +13,14 @@ mapApp.controller('MapCtrl',
           lng: defaults.lng,
           zoom: defaults.zoom,
         },
-        layers : {
-          overlays : {}
+        layers: {
+          baselayers: {
+            osm: {
+              name: 'OpenStreetMap',
+              url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              type: 'xyz'
+            },
+          }
         }
       });
 
