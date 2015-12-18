@@ -14,7 +14,8 @@
     "angular": "~1.4.7",
     "ui-leaflet": "~1.0.0",
     "ui-router": "~0.2.15",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "turf": "~2.0.0"
   },
   "ignore": [
     "**/.*",
