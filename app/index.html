@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" ng-app="mapApp">
+<head>
+  <meta charset="utf-8">
+  <title>My HTML File</title>
+  
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/leaflet/dist/leaflet.js"></script>
+
+  <script src="../bower_components/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
+  <script src="../bower_components/ui-leaflet/dist/ui-leaflet.min.js"></script>
+  <script src="../bower_components/ui-router/release/angular-ui-router.min.js"></script>
+  
+  <script src="js/app.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/routes.js"></script>
+  <script src="js/directives.js"></script>
+  <script src="js/services.js"></script>
+
+  <link rel="stylesheet" href="../bower_components/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+
+  <link rel="stylesheet" href="css/app.css" />
+
+</head>
+<body>
+
+  <top-navigation height="100px"></top-navigation>
+  
+  <div id="mainContent" ui-view></div>
+</body>
+</html>
