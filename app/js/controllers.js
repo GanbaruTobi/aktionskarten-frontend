@@ -21,19 +21,7 @@ mapApp.controller('MapCtrl',
       // if map identifier name is not given, render empty map
       if (!name) {
         // try to get location of user to center map
-        if(navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position){
-            $scope.$apply(function(){
-              angular.extend($scope, {
-                center : {
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude,
-                  zoom: 12
-                }
-              });
-            });
-          });
-        }
+        $scope.center.autoDiscover = true;
 
       } else {
         $scope.name = name;
