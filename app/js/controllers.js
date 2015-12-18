@@ -1,8 +1,8 @@
 'use strict';
 
 mapApp.controller('MapCtrl',
-  ["$scope", "api", "defaults", "$stateParams", "leafletData",
-    function ($scope, api, defaults, $stateParams, leafletData) {
+  ["$scope", "api", "defaults", "$stateParams", "leafletData", "grid",
+    function ($scope, api, defaults, $stateParams, leafletData, grid) {
       var name = $stateParams.name;
 
       // set defaults for map positioning (as fallback)
@@ -49,6 +49,37 @@ mapApp.controller('MapCtrl',
           })
         });
       }
+
+      // Everytime you zoom or move the map, bounds will be changed.
+      // Therefor we watch bounds and regenerate the grid.
+      var gridLayer;
+      $scope.$watch("bounds", function() {
+        if($scope.bounds) {
+          var gridOverlay = grid.generateOverlay($scope.bounds);
+
+          // add grid as geoJson layer to map
+          // don't use ui-leaflet geoJSONShape because we need to set as
+          // background layer
+          leafletData.getMap().then(function(map) {
+            // remove old grid
+            if (gridLayer)
+              map.removeLayer(gridLayer);
+
+            gridLayer = L.geoJson(gridOverlay, {
+              style: {
+                weight: 2,
+                fillOpacity: 0,  // disable fill color
+                color: 'grey',
+              }
+            });
+
+            // add layer and set to background
+            map.addLayer(gridLayer);
+            gridLayer.bringToBack();
+          });
+        }
+      });
+
     }
   ]
 );
