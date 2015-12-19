@@ -35,7 +35,7 @@ mapApp.controller('MapCtrl',
       } else {
         $scope.name = name;
         // Load map
-        api.getMap(name, function(data) {
+        api.getMap(name).success(function(data) {
           angular.extend($scope, {
             center: {
               lat: data.geometry.coordinates[0][0][1],
@@ -46,7 +46,7 @@ mapApp.controller('MapCtrl',
         });
 
         // Load features for map
-        api.getFeaturesForMap(name, function(data) {
+        api.getFeaturesForMap(name).success(function(data) {
           angular.extend($scope, {
               geojson: { data : data }
           })
@@ -59,7 +59,7 @@ mapApp.controller('MapCtrl',
 mapApp.controller('IndexCtrl',
   ["$scope", "api",
     function ($scope, api) {
-      api.getMapList(function(data) {
+      api.getMapList().success(function(data) {
         angular.extend($scope, {
           maps: data
         })
