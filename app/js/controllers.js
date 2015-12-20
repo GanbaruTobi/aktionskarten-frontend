@@ -7,6 +7,7 @@ mapApp.controller('MapCtrl',
 
       // set defaults for map positioning (as fallback)
       angular.extend($scope, {
+        name: "Unnamed",
         center : {
           lat: defaults.lat,
           lng: defaults.lng,
@@ -32,6 +33,7 @@ mapApp.controller('MapCtrl',
         }
 
       } else {
+        $scope.name = name;
         // Load map
         api.getMap(name, function(data) {
           angular.extend($scope, {

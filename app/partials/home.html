@@ -1,8 +1,33 @@
-Home
+<div>
+  <h3>Was sind Aktionskarten?</h3>
+  <p>
+  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+  eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+  voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
+  kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem
+  ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+  tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+  vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+  gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+  </p>
+</div>
 
-<ul>
-  <li><a ui-sref="map.new">Create a new map</a></li>
-  <li ng-repeat="map in maps">
-    <a ui-sref="map({name: map.name})">{{ map.name }}</a>
-  </li>
-</ul>
+<div class="text-right">
+  <h3>Wie kann ich mitmachen?</h3>
+  <p>
+  kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem
+  ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+  tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+  vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+  gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+  </p>
+</div>
+
+<div>
+  <h3 class="text-center">Kartenübersicht</h3>
+  <ul class="list-unstyled text-center">
+    <li ng-repeat="map in maps" class="map-thumbnail">
+      <a ui-sref="map({name: map.name})">{{ map.name }}</a>
+    </li>
+  </ul>
+</div>

@@ -1,16 +1,19 @@
-#mapWrapper {
-  height: 100%;
-  width: 100%;
-  position: absolute;
+#main {
+  margin-top: 50px;
 }
 
-#mainContentWrapper {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  z-index: 1;
+#map {
+  height: 550px;
 }
 
-#mainContent {
+.map-thumbnail {
+  width: 300px;
+  height: 200px;
   display: inline-block;
+  line-height: 200px;
+  font-size: 20pt;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 14px;
+  text-align: center;
+  margin: 10px;
 }
