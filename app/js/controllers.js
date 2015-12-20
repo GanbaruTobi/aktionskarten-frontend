@@ -54,7 +54,7 @@ mapApp.controller('MapCtrl',
   ]
 );
 
-mapApp.controller('HomeCtrl',
+mapApp.controller('IndexCtrl',
   ["$scope", "api", "defaults",
     function ($scope, api, defaults) {
       api.getMapList(function(data) {
