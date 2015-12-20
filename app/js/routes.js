@@ -5,12 +5,10 @@ mapApp.config(function($stateProvider, $urlRouterProvider) {
 
   // routes for app
   $stateProvider
-    .state('home', {
+    .state('index', {
       url: "/",
       templateUrl: "partials/home.html",
-      controller: function($scope) {
-        console.log("Main");
-      }
+      controller: 'IndexCtrl'
     })
     .state('map', {
       url: "/map/:name",

@@ -2,5 +2,7 @@ Home
 
 <ul>
   <li><a ui-sref="map.new">Create a new map</a></li>
-  <li><a ui-sref="map({name: 'Blockupy'})">Blockupy</a></li>
+  <li ng-repeat="map in maps">
+    <a ui-sref="map({name: map.name})">{{ map.name }}</a>
+  </li>
 </ul>
