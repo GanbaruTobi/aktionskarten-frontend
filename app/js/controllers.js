@@ -53,3 +53,15 @@ mapApp.controller('MapCtrl',
     }
   ]
 );
+
+mapApp.controller('HomeCtrl',
+  ["$scope", "api", "defaults",
+    function ($scope, api, defaults) {
+      api.getMapList(function(data) {
+        angular.extend($scope, {
+          maps: data
+        })
+      })
+    }
+  ]
+);

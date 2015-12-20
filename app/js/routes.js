@@ -8,9 +8,7 @@ mapApp.config(function($stateProvider, $urlRouterProvider) {
     .state('home', {
       url: "/",
       templateUrl: "partials/home.html",
-      controller: function($scope) {
-        console.log("Main");
-      }
+      controller: 'HomeCtrl'
     })
     .state('map', {
       url: "/map/:name",
