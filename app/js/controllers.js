@@ -3,15 +3,15 @@
 /*global mapApp, L, turf*/
 
 mapApp.controller('MapCtrl',
-  ["$scope", "api", "defaults", "$stateParams", "leafletData", "grid",
+  ['$scope', 'api', 'defaults', '$stateParams', 'leafletData', 'grid',
     function ($scope, api, defaults, $stateParams, leafletData, grid) {
       var name = $stateParams.name;
 
       var DefaultIcon = L.Icon.extend({
-            options: {
-              iconSize: new L.Point(defaults.marker.iconSize, defaults.marker.iconSize),
-              iconUrl: defaults.marker.iconUrl
-            }
+        options: {
+          iconSize: new L.Point(defaults.marker.iconSize, defaults.marker.iconSize),
+          iconUrl: defaults.marker.iconUrl
+        }
       });
 
 
@@ -19,7 +19,7 @@ mapApp.controller('MapCtrl',
       // functionality of ui-leaflet
       var features = L.featureGroup();
       angular.extend($scope, {
-        name: "Unnamed",
+        name: 'Unnamed',
         center : {
           lat: defaults.lat,
           lng: defaults.lng,
@@ -60,22 +60,22 @@ mapApp.controller('MapCtrl',
           // center map by calculating center of bbox
           var centerPt = turf.center(data);
           angular.extend($scope.center, {
-              lng: centerPt.geometry.coordinates[0],
-              lat: centerPt.geometry.coordinates[1]
+            lng: centerPt.geometry.coordinates[0],
+            lat: centerPt.geometry.coordinates[1]
           });
         });
 
         // Load features for map, get them from geojson and add them to layer
         api.getFeaturesForMap(name).success(function(data) {
-            L.geoJson(data, {
-              pointToLayer: function(feature, latlng) {
-                return new L.marker(latlng, {icon: new DefaultIcon()});
-              },
-              onEachFeature : function(feature, layer) {
+          L.geoJson(data, {
+            pointToLayer: function(feature, latlng) {
+              return new L.marker(latlng, {icon: new DefaultIcon()});
+            },
+            onEachFeature : function(feature, layer) {
                 // save each feature in our FeatureGroup, sadly we can't use
                 // L.geoJSON itself in combination with Leaflet.Draw
-                features.addLayer(layer);
-              }
+              features.addLayer(layer);
+            }
           });
         });
       }
@@ -83,7 +83,7 @@ mapApp.controller('MapCtrl',
       // Everytime you zoom or move the map, bounds will be changed.
       // Therefor we watch bounds and regenerate the grid.
       var gridLayer;
-      $scope.$watch("bounds", function() {
+      $scope.$watch('bounds', function() {
         if($scope.bounds) {
           var gridOverlay = grid.generateOverlay($scope.bounds);
 
@@ -117,11 +117,11 @@ mapApp.controller('MapCtrl',
           // save feature as layer in FeatureGroup
           features.addLayer(e.layer);
 
-          console.log("Added new feature. Following features are saved:");
+          console.log('Added new feature. Following features are saved:');
           features.eachLayer(function(layer) {
-              console.log(JSON.stringify(layer.toGeoJSON()));
+            console.log(JSON.stringify(layer.toGeoJSON()));
           });
-          console.log("End");
+          console.log('End');
         });
       });
     }
@@ -129,13 +129,13 @@ mapApp.controller('MapCtrl',
 );
 
 mapApp.controller('IndexCtrl',
-  ["$scope", "api",
+  ['$scope', 'api',
     function ($scope, api) {
       api.getMapList().success(function(data) {
         angular.extend($scope, {
           maps: data
-        })
-      })
+        });
+      });
     }
   ]
 );

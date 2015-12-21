@@ -21,26 +21,26 @@ mapApp
         // grid for bbox of bottomLeft, topRight
         var extent = bottomLeft.concat(topRight);
         return turf.squareGrid(extent, cellWidth, units);
-      }
+      };
     }
   ])
 
   // API service to interact with backend api
   .service('api', ['$http', 'domain', 'apiPrefix',
     function($http, domain, apiPrefix) {
-      var baseUrl = "//" + domain + apiPrefix;
+      var baseUrl = '//' + domain + apiPrefix;
 
-        this.getMapList = function() {
-            return $http.get(baseUrl);
-        }
+      this.getMapList = function() {
+        return $http.get(baseUrl);
+      };
 
-        this.getMap = function(name) {
-          return $http.get(baseUrl + name);
-        }
+      this.getMap = function(name) {
+        return $http.get(baseUrl + name);
+      };
 
-        this.getFeaturesForMap = function(name) {
-          var url = baseUrl + name + '/features';
-          return $http.get(url);
-        }
+      this.getFeaturesForMap = function(name) {
+        var url = baseUrl + name + '/features';
+        return $http.get(url);
+      };
     }
   ]);
