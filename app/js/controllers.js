@@ -12,6 +12,9 @@ mapApp.controller('MapCtrl',
           lat: defaults.lat,
           lng: defaults.lng,
           zoom: defaults.zoom,
+        },
+        layers : {
+          overlays : {}
         }
       });
 
