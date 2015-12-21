@@ -5,7 +5,17 @@ mapApp.controller('MapCtrl',
     function ($scope, api, defaults, $stateParams, leafletData, grid) {
       var name = $stateParams.name;
 
-      // set defaults for map positioning (as fallback)
+      var DefaultIcon = L.Icon.extend({
+            options: {
+              iconSize: new L.Point(defaults.marker.iconSize, defaults.marker.iconSize),
+              iconUrl: defaults.marker.iconUrl
+            }
+      });
+
+
+      // we need direct access to featureGroup therefor we can not use overlay
+      // functionality of ui-leaflet
+      var features = L.featureGroup();
       angular.extend($scope, {
         name: "Unnamed",
         center : {
@@ -20,6 +30,18 @@ mapApp.controller('MapCtrl',
               url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
               type: 'xyz'
             },
+          }
+        },
+        controls: {
+          draw: {
+            draw : {
+              marker: {
+                icon: new DefaultIcon()
+              }
+            },
+            edit: {
+              featureGroup : features
+            }
           }
         }
       });
@@ -41,11 +63,18 @@ mapApp.controller('MapCtrl',
           });
         });
 
-        // Load features for map
+        // Load features for map, get them from geojson and add them to layer
         api.getFeaturesForMap(name).success(function(data) {
-          angular.extend($scope, {
-              geojson: { data : data }
-          })
+            L.geoJson(data, {
+              pointToLayer: function(feature, latlng) {
+                return new L.marker(latlng, {icon: new DefaultIcon()});
+              },
+              onEachFeature : function(feature, layer) {
+                // save each feature in our FeatureGroup, sadly we can't use
+                // L.geoJSON itself in combination with Leaflet.Draw
+                features.addLayer(layer);
+              }
+          });
         });
       }
 
@@ -79,6 +108,20 @@ mapApp.controller('MapCtrl',
         }
       });
 
+      // add our features to map and update on changes
+      leafletData.getMap().then(function(map) {
+        map.addLayer(features);
+        map.on('draw:created', function (e) {
+          // save feature as layer in FeatureGroup
+          features.addLayer(e.layer);
+
+          console.log("Added new feature. Following features are saved:");
+          features.eachLayer(function(layer) {
+              console.log(JSON.stringify(layer.toGeoJSON()));
+          });
+          console.log("End");
+        });
+      });
     }
   ]
 );

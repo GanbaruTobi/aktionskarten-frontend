@@ -13,6 +13,7 @@
   "dependencies": {
     "angular": "~1.4.7",
     "ui-leaflet": "~1.0.0",
+    "leaflet-draw": "~0.2.4",
     "ui-router": "~0.2.15",
     "bootstrap": "~3.3.5",
     "turf": "~2.0.0"
