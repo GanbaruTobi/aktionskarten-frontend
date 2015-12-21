@@ -116,12 +116,6 @@ mapApp.controller('MapCtrl',
         map.on('draw:created', function (e) {
           // save feature as layer in FeatureGroup
           features.addLayer(e.layer);
-
-          console.log('Added new feature. Following features are saved:');
-          features.eachLayer(function(layer) {
-            console.log(JSON.stringify(layer.toGeoJSON()));
-          });
-          console.log('End');
         });
       });
     }
