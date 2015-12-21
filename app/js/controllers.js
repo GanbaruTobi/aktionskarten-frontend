@@ -23,7 +23,7 @@ mapApp.controller('MapCtrl',
         center : {
           lat: defaults.lat,
           lng: defaults.lng,
-          zoom: defaults.zoom,
+          zoom: defaults.zoom
         },
         layers: {
           baselayers: {
@@ -31,7 +31,7 @@ mapApp.controller('MapCtrl',
               name: 'OpenStreetMap',
               url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
               type: 'xyz'
-            },
+            }
           }
         },
         controls: {
@@ -99,7 +99,7 @@ mapApp.controller('MapCtrl',
               style: {
                 weight: 2,
                 fillOpacity: 0,  // disable fill color
-                color: 'grey',
+                color: 'grey'
               }
             });
 
