@@ -4,8 +4,8 @@
 
 mapApp
   // Grid Service to generate grids for map
-  .service('grid', ['gridCells', 'leafletData',
-    function(gridCells, leafletData) {
+  .service('grid', ['gridCells',
+    function(gridCells) {
       var units = 'kilometers';
 
       this.generateOverlay = function(bounds) {
