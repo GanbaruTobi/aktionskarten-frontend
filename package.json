@@ -1,0 +1,23 @@
+{
+  "name": "aktionkarten-frontend",
+  "version": "0.1.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "lint": "eslint app/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:KartographischeAktion/aktionskarten-frontend.git"
+  },
+  "license": "GPLv2",
+  "bugs": {
+    "url": "https://github.com/KartographischeAktion/aktionskarten-frontend/issues"
+  },
+  "homepage": "https://github.com/KartographischeAktion/aktionskarten-frontend",
+  "devDependencies": {
+    "eslint": "*",
+    "eslint-plugin-html": "*"
+  }
+}
+
