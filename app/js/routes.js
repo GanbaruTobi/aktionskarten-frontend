@@ -1,5 +1,7 @@
 'use strict';
 
+/*global mapApp*/
+
 mapApp.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise("/");
 

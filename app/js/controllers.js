@@ -1,5 +1,7 @@
 'use strict';
 
+/*global mapApp, L, turf*/
+
 mapApp.controller('MapCtrl',
   ["$scope", "api", "defaults", "$stateParams", "leafletData", "grid",
     function ($scope, api, defaults, $stateParams, leafletData, grid) {

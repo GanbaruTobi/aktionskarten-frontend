@@ -1,5 +1,7 @@
 'use strict';
 
+/*global mapApp, turf*/
+
 mapApp
   // Grid Service to generate grids for map
   .service('grid', ['gridCells', 'leafletData',
