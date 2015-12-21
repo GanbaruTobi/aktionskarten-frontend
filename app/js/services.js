@@ -5,17 +5,17 @@ mapApp
     function($http, domain, apiPrefix){
         var baseUrl = "//" + domain + apiPrefix;
 
-        this.getMapList = function(cb) {
-            $http.get(baseUrl).success(cb);
+        this.getMapList = function() {
+            return $http.get(baseUrl);
         }
 
-        this.getMap = function(name, cb) {
-          $http.get(baseUrl + name).success(cb);
+        this.getMap = function(name) {
+          return $http.get(baseUrl + name);
         }
 
-        this.getFeaturesForMap = function(name, cb) {
+        this.getFeaturesForMap = function(name) {
           var url = baseUrl + name + '/features';
-          $http.get(url).success(cb);
+          return $http.get(url);
         }
       }
     ]
