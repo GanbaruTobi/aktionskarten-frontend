@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "angular": "~1.4.7",
+    "angular-mocks": "*",
     "ui-leaflet": "~1.0.0",
     "leaflet-draw": "~0.2.4",
     "ui-router": "~0.2.15",
