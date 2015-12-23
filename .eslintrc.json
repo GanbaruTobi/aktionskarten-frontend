@@ -21,7 +21,8 @@
         "browser": true
     },
     "globals": {
-      "angular": false
+      "angular": false,
+      "turf": false
     },
     "plugins": [
         "html"
