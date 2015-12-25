@@ -3,12 +3,29 @@
 /*global mapApp, turf*/
 
 mapApp
+  // Helper to calculate bounds from bbox
+  .service('boundsHelper', ['leafletBoundsHelpers',
+    function (leafletBoundsHelpers) {
+      this.getBounds = function(bbox) {
+        return leafletBoundsHelpers.createBoundsFromArray(
+          [[bbox[3], bbox[2]],
+          [bbox[1], bbox[0]]]
+        );
+      };
+    }
+  ])
+
   // Grid Service to generate grids for map
-  .service('grid', ['gridCells',
-    function(gridCells) {
+  .service('grid', ['gridCells', 'boundsHelper',
+    function(gridCells, boundsHelper) {
       var units = 'kilometers';
 
-      this.generateOverlay = function(bounds) {
+      this.generateBorderOverlay = function(bbox) {
+        return turf.bboxPolygon(bbox);
+      };
+
+      this.generateGridOverlay = function(bbox) {
+        var bounds = boundsHelper.getBounds(bbox);
         var bottomLeft = [bounds.southWest.lng, bounds.southWest.lat];
         var bottomRight = [bounds.northEast.lng, bounds.southWest.lat];
         var topRight = [bounds.northEast.lng, bounds.northEast.lat];
@@ -20,7 +37,13 @@ mapApp
 
         // grid for bbox of bottomLeft, topRight
         var extent = bottomLeft.concat(topRight);
-        return turf.squareGrid(extent, cellWidth, units);
+        var geojson = turf.squareGrid(extent, cellWidth, units);
+        var borderOverlay = this.generateBorderOverlay(bbox);
+        // show grid only in bounds
+        for (var i=0; i<geojson.features.length; i++) {
+          geojson.features[i] = turf.intersect(geojson.features[i], borderOverlay);
+        }
+        return geojson;
       };
     }
   ])

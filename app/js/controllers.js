@@ -1,10 +1,10 @@
 'use strict';
 
-/*global mapApp, L, turf*/
+/*global mapApp, L*/
 
 mapApp.controller('MapCtrl',
-  ['$scope', 'api', 'defaults', '$stateParams', 'leafletData', 'grid',
-    function ($scope, api, defaults, $stateParams, leafletData, grid) {
+  ['$scope', 'api', 'defaults', '$stateParams', 'leafletData', 'grid', 'boundsHelper',
+    function ($scope, api, defaults, $stateParams, leafletData, grid, boundsHelper) {
       var name = $stateParams.name;
 
       var DefaultIcon = L.Icon.extend({
@@ -13,7 +13,8 @@ mapApp.controller('MapCtrl',
           iconUrl: defaults.marker.iconUrl
         }
       });
-
+      var gridLayer;
+      var borderLayer;
 
       // we need direct access to featureGroup therefor we can not use overlay
       // functionality of ui-leaflet
@@ -58,10 +59,36 @@ mapApp.controller('MapCtrl',
         // Load map
         api.getMap(name).success(function(data) {
           // center map by calculating center of bbox
-          var centerPt = turf.center(data);
-          angular.extend($scope.center, {
-            lng: centerPt.geometry.coordinates[0],
-            lat: centerPt.geometry.coordinates[1]
+          angular.extend($scope.bounds, boundsHelper.getBounds(data.bbox));
+
+          // add grid for better orientation to map
+          var gridOverlay = grid.generateGridOverlay(data.bbox);
+          gridLayer = L.geoJson(gridOverlay, {
+            style: {
+              weight: 2,
+              fillOpacity: 0,  // disable fill color
+              color: 'grey'
+            }
+          });
+
+          var borderOverlay = grid.generateBorderOverlay(data.bbox);
+          borderLayer = L.geoJson(borderOverlay, {
+            style: {
+              weight: 5,
+              fillOpacity: 0,
+              color: 'red'
+            }
+          });
+          leafletData.getMap().then(function(map) {
+            // add layers and set to background
+            if (gridLayer) {
+              map.addLayer(gridLayer);
+              gridLayer.bringToBack();
+            }
+            if (borderLayer) {
+              map.addLayer(borderLayer);
+              borderLayer.bringToBack();
+            }
           });
         });
 
@@ -79,36 +106,6 @@ mapApp.controller('MapCtrl',
           });
         });
       }
-
-      // Everytime you zoom or move the map, bounds will be changed.
-      // Therefor we watch bounds and regenerate the grid.
-      var gridLayer;
-      $scope.$watch('bounds', function() {
-        if($scope.bounds) {
-          var gridOverlay = grid.generateOverlay($scope.bounds);
-
-          // add grid as geoJson layer to map
-          // don't use ui-leaflet geoJSONShape because we need to set as
-          // background layer
-          leafletData.getMap().then(function(map) {
-            // remove old grid
-            if (gridLayer)
-              map.removeLayer(gridLayer);
-
-            gridLayer = L.geoJson(gridOverlay, {
-              style: {
-                weight: 2,
-                fillOpacity: 0,  // disable fill color
-                color: 'grey'
-              }
-            });
-
-            // add layer and set to background
-            map.addLayer(gridLayer);
-            gridLayer.bringToBack();
-          });
-        }
-      });
 
       // add our features to map and update on changes
       leafletData.getMap().then(function(map) {
