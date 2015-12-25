@@ -11,7 +11,7 @@ mapApp
           [[bbox[3], bbox[2]],
           [bbox[1], bbox[0]]]
         );
-      }
+      };
     }
   ])
 
@@ -22,7 +22,7 @@ mapApp
 
       this.generateBorderOverlay = function(bbox) {
         return turf.bboxPolygon(bbox);
-      }
+      };
 
       this.generateGridOverlay = function(bbox) {
         var bounds = boundsHelper.getBounds(bbox);
