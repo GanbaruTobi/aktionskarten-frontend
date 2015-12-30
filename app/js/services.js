@@ -26,6 +26,10 @@ mapApp
 
       this.generateGridOverlay = function(bbox) {
         var bounds = boundsHelper.getBounds(bbox);
+        if (bounds.southWest.lng > bounds.northEast.lng ||
+            bounds.southWest.lat > bounds.northEast.lat)
+          throw new Error('ValueError');
+
         var bottomLeft = [bounds.southWest.lng, bounds.southWest.lat];
         var bottomRight = [bounds.northEast.lng, bounds.southWest.lat];
         var topRight = [bounds.northEast.lng, bounds.northEast.lat];
