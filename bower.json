@@ -17,7 +17,9 @@
     "leaflet-draw": "~0.2.4",
     "ui-router": "~0.2.15",
     "bootstrap": "~3.3.5",
-    "turf": "~2.0.0"
+    "turf": "~2.0.0",
+    "restangular": "~1.4.0",
+    "lodash": "~3.10.1"
   },
   "ignore": [
     "**/.*",
@@ -25,6 +27,8 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "resolutions": {
+    "lodash": "~3.10.1"
+  }
 }
-

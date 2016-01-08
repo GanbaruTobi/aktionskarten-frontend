@@ -20,10 +20,6 @@ mapApp
     function(gridCells, boundsHelper) {
       var units = 'kilometers';
 
-      this.generateBorderOverlay = function(bbox) {
-        return turf.bboxPolygon(bbox);
-      };
-
       this.generateGridOverlay = function(bbox) {
         var bounds = boundsHelper.getBounds(bbox);
         if (bounds.southWest.lng > bounds.northEast.lng ||
@@ -42,7 +38,7 @@ mapApp
         // grid for bbox of bottomLeft, topRight
         var extent = bottomLeft.concat(topRight);
         var geojson = turf.squareGrid(extent, cellWidth, units);
-        var borderOverlay = this.generateBorderOverlay(bbox);
+        var borderOverlay = turf.bboxPolygon(bbox);
         // show grid only in bounds
         for (var i=0; i<geojson.features.length; i++) {
           geojson.features[i] = turf.intersect(geojson.features[i], borderOverlay);
@@ -53,21 +49,11 @@ mapApp
   ])
 
   // API service to interact with backend api
-  .service('api', ['$http', 'domain', 'apiPrefix',
-    function($http, domain, apiPrefix) {
-      var baseUrl = '//' + domain + apiPrefix;
-
-      this.getMapList = function() {
-        return $http.get(baseUrl);
-      };
-
-      this.getMap = function(name) {
-        return $http.get(baseUrl + name);
-      };
-
-      this.getFeaturesForMap = function(name) {
-        var url = baseUrl + name + '/features';
-        return $http.get(url);
-      };
+  .service('mapsApi', ['$http', 'domain', 'apiPrefix', 'Restangular',
+    function($http, domain, apiPrefix, restangular) {
+      var baseUrl = 'http://' + domain + apiPrefix;
+      restangular.setBaseUrl(baseUrl);
+      restangular.setRequestSuffix('/');
+      return restangular.service('maps');
     }
   ]);

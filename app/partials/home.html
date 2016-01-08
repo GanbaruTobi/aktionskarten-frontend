@@ -27,7 +27,7 @@
   <h3 class="text-center">Kartenübersicht</h3>
   <ul class="list-unstyled text-center">
     <li ng-repeat="map in maps" class="map-thumbnail">
-      <a ui-sref="map({name: map.name})">{{ map.name }}</a>
+      <a ui-sref="map({mapName: map.name})">{{ map.name }}</a>
     </li>
   </ul>
 </div>

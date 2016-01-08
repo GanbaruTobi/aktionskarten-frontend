@@ -13,7 +13,7 @@ mapApp.config(function($stateProvider, $urlRouterProvider) {
       controller: 'IndexCtrl'
     })
     .state('map', {
-      url: '/map/:name',
+      url: '/map/:mapName',
       templateUrl: 'partials/map.html',
       controller: 'MapCtrl'
     })

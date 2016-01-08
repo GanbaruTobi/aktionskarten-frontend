@@ -4,7 +4,7 @@
 
 mapApp
   .constant('domain', '//localhost:8080')
-  .constant('apiPrefix', '/api/v1/maps/')
+  .constant('apiPrefix', '/api/v1/')
   .constant('gridCells', 10)
   .constant('defaults', {
     lat: 51.505,   // London
