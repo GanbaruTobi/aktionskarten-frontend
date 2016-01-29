@@ -23,6 +23,8 @@ module.exports = function(config) {
       'bower_components/ui-router/release/angular-ui-router.min.js',
       'bower_components/turf/turf.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/lodash/lodash.js',
+      'bower_components/restangular/dist/restangular.js',
       'app/**/*.js',
       'test/*.js',
     ],
