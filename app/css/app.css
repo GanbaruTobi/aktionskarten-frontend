@@ -17,3 +17,18 @@
   text-align: center;
   margin: 10px;
 }
+
+#new-map-overlay-outer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+}
+
+#new-map-overlay-inner {
+  position: relative;
+  left: -50%;
+  top: -50%;
+  padding: 10px;
+  background: white;
+}

@@ -1,5 +1,15 @@
-<h3 ng-bind="mapName" class="text-center">Unnamed</h3>
+<div>
+  <h3 class="text-center" ng-bind="mapName"></h3>
+  <div id="new-map-overlay-outer" ng-show="newMapOverlay">
+    <div id="new-map-overlay-inner">
+      <label> Define MapName<input type="text" ng-model="mapName"/></label>
+      <label> Public Map<input type="checkbox" ng-model="mapPublic"/></label>
+      <label> Publicly editabel Map<input type="checkbox" ng-model="mapEditable"/></label>
+      <button ng-click="newMapOverlay=false">Set BBOX</button>
+    </div>
+  </div>
 
-<div id="map">
-  <leaflet controls="controls" lf-center="center" bounds="bounds" layers="layers" height="100%" width="100%" ></leaflet>
+  <div id="map">
+    <leaflet controls="controls" lf-center="center" bounds="bounds" layers="layers" height="100%" width="100%" ></leaflet>
+  </div>
 </div>
