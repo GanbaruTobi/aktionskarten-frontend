@@ -96,7 +96,7 @@ mapApp.controller('MapCtrl',
             }
             if (borderLayer) {
               features.addLayer(borderLayer);
-              borderLayer.bringToBack();
+              //borderLayer.bringToBack();
             }
           });
 
@@ -189,8 +189,8 @@ mapApp.controller('MapCtrl',
                   polyline: false,
                   polygon: false,
                   circle: false,
-                  marker: false,
-                },
+                  marker: false
+                }
               }
             }
           });
@@ -224,8 +224,8 @@ mapApp.controller('MapCtrl',
                 polyline: false,
                 polygon: false,
                 circle: false,
-                marker: false,
-              },
+                marker: false
+              }
             }
           }
         });
@@ -240,7 +240,7 @@ mapApp.controller('MapCtrl',
               public: $scope.mapPublic,
               editable: $scope.mapEditable
             }).then(function(){
-              $location.path("/map/"+$scope.mapName)
+              $location.path('/map/'+$scope.mapName);
             });
           });
         });
