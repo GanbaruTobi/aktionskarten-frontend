@@ -1,5 +1,36 @@
-<h3 ng-bind="mapName" class="text-center">Unnamed</h3>
+<div>
+  <h3 class="text-center" ng-bind="mapName"></h3>
+  <div ng-show="newMapOverlay">
+    <div id="createMap" class="panel panel-primary">
+      <div class="panel-heading">Map does not exist - create it!</div>
+      <div class="panel-body">
+        <form role="form">
+          <div class="form-group">
+            <label for="mapName">MapName</label>
+            <input id="mapName" type="text" ng-model="mapName" placeholder="insert mapname"/>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="mapPublic" type="checkbox" ng-model="mapPublic">Public Map
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="mapEditable" type="checkbox" ng-model="mapEditable">Publicly editabel Map
+            </label>
+          </div>
+          <div>
+            To create the map use the rectangle icon shown in the upper left of the map.</br>
+            The selected area will be the bounding box of the map.</br>
+            It can be altered after the creation of the map.
+          </div>
+          <button class="btn btn-primary" ng-click="newMapOverlay=false">Set BBOX</button>
+        </form>
+      </div>
+    </div>
+  </div>
 
-<div id="map">
-  <leaflet controls="controls" lf-center="center" bounds="bounds" layers="layers" height="100%" width="100%" ></leaflet>
+  <div id="map" ng-hide="newMapOverlay">
+    <leaflet controls="controls" lf-center="center" bounds="bounds" layers="layers" height="100%" width="100%" ></leaflet>
+  </div>
 </div>

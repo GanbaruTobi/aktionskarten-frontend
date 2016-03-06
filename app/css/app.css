@@ -17,3 +17,7 @@
   text-align: center;
   margin: 10px;
 }
+
+#createMap .btn{
+  float: right;
+}

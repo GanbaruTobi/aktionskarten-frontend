@@ -12,13 +12,13 @@ mapApp.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: 'partials/home.html',
       controller: 'IndexCtrl'
     })
-    .state('map', {
-      url: '/map/:mapName',
+    .state('new_map', {
+      url: '/map/',
       templateUrl: 'partials/map.html',
       controller: 'MapCtrl'
     })
-    .state('map.new', {
-      url: '^/map/',
+    .state('map', {
+      url: '/map/:mapName',
       templateUrl: 'partials/map.html',
       controller: 'MapCtrl'
     });
