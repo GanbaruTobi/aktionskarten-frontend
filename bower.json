@@ -11,15 +11,15 @@
   "homepage": "https://github.com/KartographischeAktion/aktionskarten-frontend",
   "private": true,
   "dependencies": {
-    "angular": "~1.4.7",
-    "angular-mocks": "~1.4.7",
+    "angular": "~1.5",
+    "angular-mocks": "~1.5",
     "ui-leaflet": "~1.0.0",
     "leaflet-draw": "~0.2.4",
-    "ui-router": "~0.2.15",
-    "bootstrap": "~3.3.5",
-    "turf": "~2.0.0",
-    "restangular": "~1.5.1",
-    "lodash": "~3.10.1"
+    "ui-router": "~0.2.18",
+    "bootstrap": "~3.3.6",
+    "turf": "~2.0.2",
+    "restangular": "~1.5.2",
+    "lodash": "~4.6.1"
   },
   "ignore": [
     "**/.*",
@@ -27,8 +27,5 @@
     "bower_components",
     "test",
     "tests"
-  ],
-  "resolutions": {
-    "lodash": "~3.10.1"
-  }
+  ]
 }
