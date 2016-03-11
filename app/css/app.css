@@ -1,9 +1,36 @@
+html {
+  height : 100%;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 #main {
-  margin-top: 50px;
+  position: relative;
+  width: 100%;
+  padding-bottom: 15px;
+  flex: 1;
+}
+
+div.ng-scope {
+  display: flex;
+  flex-direction: column;
 }
 
 #map {
-  height: 550px;
+  flex: 1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 50px;
+  margin: 15px;
+
+  /* needed for chrome in mobile version */
+  z-index: 100;
 }
 
 .map-thumbnail {
