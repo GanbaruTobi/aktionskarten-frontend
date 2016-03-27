@@ -3,8 +3,8 @@
 /*global mapApp, L*/
 
 mapApp.controller('MapCtrl',
-  ['$scope', 'mapsApi', 'defaults', '$stateParams', 'leafletData', 'grid', 'boundsHelper', '$location',
-    function ($scope, mapsApi, defaults, $stateParams, leafletData, grid, boundsHelper, $location) {
+  ['$scope', 'mapsApi', 'defaults', '$stateParams', 'leafletData', 'grid', 'boundsHelper', '$location', '$document',
+    function ($scope, mapsApi, defaults, $stateParams, leafletData, grid, boundsHelper, $location, $document) {
       var mapName = $stateParams.mapName;
 
       var DefaultIcon = L.Icon.extend({
@@ -89,6 +89,10 @@ mapApp.controller('MapCtrl',
           borderLayer.bbox=true;
 
           leafletData.getMap().then(function(map) {
+
+            // resize map after css is applied correctly
+            $document.ready(function(){map.invalidateSize();});
+
             // add layers and set to background
             if (gridLayer) {
               map.addLayer(gridLayer);
@@ -122,7 +126,6 @@ mapApp.controller('MapCtrl',
           // add our features to map and update on changes
           leafletData.getMap().then(function(map) {
             map.addLayer(features);
-
             map.on('draw:created', function (e) {
               var geo = JSON.stringify(e.layer.toGeoJSON().geometry);
               var postData = {geo: geo, map: $scope.mapName};
