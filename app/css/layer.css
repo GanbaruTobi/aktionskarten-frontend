@@ -1,0 +1,12 @@
+.border-layer {
+  fill-opacity: 0;
+  stroke: #dd557b;
+  stroke-width: 10px;
+  stroke-opacity: 1;
+  stroke-linejoin: miter;
+}
+
+.grid_name {
+ text-align: center;
+ font-size: 9px;
+}

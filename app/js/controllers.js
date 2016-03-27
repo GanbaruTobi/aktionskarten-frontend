@@ -56,12 +56,12 @@ mapApp.controller('MapCtrl',
                 },
                 edit: {
                   featureGroup : features
-                },
+                }
               },
               custom: L.control.styleEditor({
-                  position: 'topleft',
-                  openOnLeafletDraw: true,
-                  useGrouping: false
+                position: 'topleft',
+                openOnLeafletDraw: true,
+                useGrouping: false
               })
             }
           });
@@ -72,22 +72,14 @@ mapApp.controller('MapCtrl',
           );
 
           // add grid for better orientation to map
-          gridLayer = L.geoJson(grid.generateGridOverlay(mapData.bbox), {
-            style: {
-              weight: 2,
-              fillOpacity: 0,  // disable fill color
-              color: 'grey'
-            }
-          });
+          gridLayer = grid.generateGridOverlay(mapData.bbox);
 
           // generate Bbox layer
           borderLayer = L.rectangle(
             [[$scope.bounds.southWest.lat, $scope.bounds.southWest.lng],
             [$scope.bounds.northEast.lat, $scope.bounds.northEast.lng]],
             {
-              weight: 5,
-              fillOpacity: 0,
-              color: 'red'
+              className: 'border-layer'
             }
           );
           // mark as bbox
@@ -123,7 +115,7 @@ mapApp.controller('MapCtrl',
                 if (feature.properties && feature.properties.radius) {
                   layer = L.circle(layer.getLatLng(),
                             feature.properties.radius,
-                            { style : feature.properties}
+                            feature.properties
                   );
                 }
                 layer.id = feature.id;
@@ -163,13 +155,7 @@ mapApp.controller('MapCtrl',
                   // regenerate grid layer
                   map.removeLayer(gridLayer);
                   var bbox = layer.getBounds().toBBoxString().split(',').map(parseFloat);
-                  gridLayer = L.geoJson(grid.generateGridOverlay(bbox), {
-                    style: {
-                      weight: 2,
-                      fillOpacity: 0,  // disable fill color
-                      color: 'grey'
-                    }
-                  });
+                  gridLayer = grid.generateGridOverlay(bbox);
                   map.addLayer(gridLayer);
                   gridLayer.bringToBack();
                 } else {
@@ -186,16 +172,13 @@ mapApp.controller('MapCtrl',
             map.on('styleeditor:changed', function(e){
               var feature = $scope.restMap.one('features', e.id);
               var validKeys = ['stroke', 'color', 'weight', 'opacity', 'fill',
-                'fillColor', 'fillOpacity'];
+                'fillColor', 'fillOpacity', 'dashArray'];
 
               for (var k in e.options) {
                 if (validKeys.indexOf(k) >= 0) {
                   feature[k] = e.options[k];
-                } else {
-                  console.log('skipped ', k);
                 }
               }
-
               feature.patch();
             });
 
