@@ -56,8 +56,13 @@ mapApp.controller('MapCtrl',
                 },
                 edit: {
                   featureGroup : features
-                }
-              }
+                },
+              },
+              custom: L.control.styleEditor({
+                  position: 'topleft',
+                  openOnLeafletDraw: true,
+                  useGrouping: false
+              })
             }
           });
 
@@ -110,10 +115,16 @@ mapApp.controller('MapCtrl',
               pointToLayer: function(feature, latlng) {
                 return new L.marker(latlng, {icon: new DefaultIcon()});
               },
+              style: function(feature) {
+                return feature.properties;
+              },
               onEachFeature : function(feature, layer) {
                 // check if feature is a circle
                 if (feature.properties && feature.properties.radius) {
-                  layer = L.circle(layer.getLatLng(),feature.properties.radius);
+                  layer = L.circle(layer.getLatLng(),
+                            feature.properties.radius,
+                            { style : feature.properties}
+                  );
                 }
                 layer.id = feature.id;
                 // save each feature in our FeatureGroup, sadly we can't use
@@ -168,6 +179,24 @@ mapApp.controller('MapCtrl',
                   $scope.restMap.one('features', layer.id).patch(patchData);
                 }
               });
+
+            });
+
+            // Persist style changes
+            map.on('styleeditor:changed', function(e){
+              var feature = $scope.restMap.one('features', e.id);
+              var validKeys = ['stroke', 'color', 'weight', 'opacity', 'fill',
+                'fillColor', 'fillOpacity'];
+
+              for (var k in e.options) {
+                if (validKeys.indexOf(k) >= 0) {
+                  feature[k] = e.options[k];
+                } else {
+                  console.log('skipped ', k);
+                }
+              }
+
+              feature.patch();
             });
 
             // remove deleted features
