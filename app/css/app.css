@@ -48,3 +48,12 @@ div.ng-scope {
 #createMap .btn{
   float: right;
 }
+
+.leaflet-control-styleeditor-interior {
+  height: 26px;
+  width: 26px;
+}
+
+.leaflet-styleeditor-tooltip-wrapper {
+  z-index: 2000;
+}

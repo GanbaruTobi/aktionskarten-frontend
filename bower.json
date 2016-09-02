@@ -19,6 +19,7 @@
     "bootstrap": "~3.3.6",
     "turf": "~2.0.2",
     "restangular": "~1.5.2",
+    "Leaflet.StyleEditor": "~0.1.5",
     "lodash": "~4.6.1"
   },
   "ignore": [
