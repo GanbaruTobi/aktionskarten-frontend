@@ -20,7 +20,7 @@
     "turf": "~2.0.2",
     "restangular": "~1.5.2",
     "Leaflet.StyleEditor": "~0.1.5",
-    "Leaflet.awesome-markers": "~2.0.2",
+    "Leaflet.ExtraMarkers": "git://github.com/coryasilva/Leaflet.ExtraMarkers#master",
     "lodash": "~4.6.1"
   },
   "ignore": [
