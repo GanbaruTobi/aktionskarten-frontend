@@ -105,13 +105,8 @@ mapApp.controller('MapCtrl',
           $scope.restMap.one('features').get().then(function(featureData) {
             L.geoJson(featureData, {
               pointToLayer: function(feature, latlng) {
-                var iconOptions = {};
-                window.asdf = feature;
-                if (!!feature.properties.style && !!feature.properties.icon) {
-                    iconOptions = feature.properties.style.icon.options;
-                } 
                 return new L.marker(latlng, {
-                  icon: new DefaultIcon(); 
+                  icon: new DefaultIcon()
                 });
               },
               style: function(feature) {
@@ -128,7 +123,24 @@ mapApp.controller('MapCtrl',
                 layer.id = feature.id;
 
                 for (var k in feature.properties.style)
-                  layer.options[k] = feature.properties.style[k];
+                  if (validStyleKeys.indexOf(k) >= 0) {
+                    if (k=='icon'){
+                      var icon= feature.properties.style[k];
+                      if (icon.options) {
+                        if (!!icon.options.iconUrl) {
+                          layer.setIcon(new L.Icon(feature.properties.style[k].options));
+                        } else if (!!icon.options.html) {
+                          layer.setIcon(new L.DivIcon(feature.properties.style[k].options));
+                        } else {
+                          layer.setIcon(new DefaultIcon());
+                        }
+                      } else {
+                        layer,setIcon = new DefaultIcon();
+                      }
+                    }
+                    else
+                      layer.options[k] = feature.properties.style[k];
+                  }
 
                 // save each feature in our FeatureGroup, sadly we can't use
                 // L.geoJSON itself in combination with Leaflet.Draw
@@ -192,7 +204,6 @@ mapApp.controller('MapCtrl',
               var feature = $scope.restMap.one('features', e.id);
 
               var style = {};
-              window.eop=e.options;
               for (var k in e.options) {
                 if (validStyleKeys.indexOf(k) >= 0 && !!e.options[k]) {
                   style[k] = e.options[k];
