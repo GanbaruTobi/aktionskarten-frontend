@@ -3,8 +3,8 @@
 /*global mapApp, L*/
 
 mapApp.controller('MapCtrl',
-  ['$scope', 'mapsApi', 'defaults', '$stateParams', 'leafletData', 'grid', 'boundsHelper', '$location', '$document',
-    function ($scope, mapsApi, defaults, $stateParams, leafletData, grid, boundsHelper, $location, $document) {
+  ['$scope', 'mapsApi', 'defaults', '$stateParams', 'leafletData', 'grid', 'boundsHelper', '$location', '$document', 'validStyleKeys',
+    function ($scope, mapsApi, defaults, $stateParams, leafletData, grid, boundsHelper, $location, $document, validStyleKeys) {
       var mapName = $stateParams.mapName;
 
       var DefaultIcon = L.Icon.extend({
@@ -119,6 +119,10 @@ mapApp.controller('MapCtrl',
                   );
                 }
                 layer.id = feature.id;
+
+                for (var k in feature.properties.style)
+                  layer.options[k] = feature.properties.style[k];
+
                 // save each feature in our FeatureGroup, sadly we can't use
                 // L.geoJSON itself in combination with Leaflet.Draw
                 features.addLayer(layer);
@@ -136,6 +140,14 @@ mapApp.controller('MapCtrl',
               // if the layer is a circle save radius to properties
               if (e.layer.getRadius)
                 postData.radius = e.layer.getRadius();
+
+              var style = {};
+              for (var k in e.layer.options) {
+                if (validStyleKeys.indexOf(k) >= 0 && !!e.layer.options[k]) {
+                  style[k] = e.layer.options[k];
+                }
+              }
+              postData.style = style;
 
               // save feature as layer in FeatureGroup
               $scope.restMap.all('features').post(postData).then(
@@ -171,14 +183,14 @@ mapApp.controller('MapCtrl',
             // Persist style changes
             map.on('styleeditor:changed', function(e){
               var feature = $scope.restMap.one('features', e.id);
-              var validKeys = ['stroke', 'color', 'weight', 'opacity', 'fill',
-                'fillColor', 'fillOpacity', 'dashArray'];
 
+              var style = {};
               for (var k in e.options) {
-                if (validKeys.indexOf(k) >= 0) {
-                  feature[k] = e.options[k];
+                if (validStyleKeys.indexOf(k) >= 0 && !!e.options[k]) {
+                  style[k] = e.options[k];
                 }
               }
+              feature.style = style;
               feature.patch();
             });
 

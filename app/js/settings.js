@@ -14,4 +14,9 @@ mapApp
       iconSize: 24,
       iconUrl : 'img/logos/24x24/attention.png'
     }
-  });
+  })
+  .constant(
+    'validStyleKeys', [
+      'color', 'weight', 'opacity', 'fillColor', 'fillOpacity', 'dashArray'
+    ]
+  );
