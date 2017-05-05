@@ -3,7 +3,7 @@
 /*global mapApp*/
 
 mapApp
-  .constant('domain', '//localhost:8080')
+  .constant('domain', 'http://localhost:8080')
   .constant('apiPrefix', '/api/v1/')
   .constant('gridCells', 10)
   .constant('defaults', {

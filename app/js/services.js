@@ -176,7 +176,7 @@ mapApp
   // API service to interact with backend api
   .service('mapsApi', ['$http', 'domain', 'apiPrefix', 'Restangular',
     function($http, domain, apiPrefix, restangular) {
-      var baseUrl = 'http://' + domain + apiPrefix;
+      var baseUrl = domain + apiPrefix;
       restangular.setBaseUrl(baseUrl);
       restangular.setRequestSuffix('/');
       return restangular.service('maps');
