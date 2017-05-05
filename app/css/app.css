@@ -21,14 +21,9 @@ div.ng-scope {
 }
 
 #map {
-  flex: 1;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 50px;
   width: 210mm;
   height: 297mm;
+  margin: 0 auto;
 
   /* needed for chrome in mobile version */
   z-index: 100;
