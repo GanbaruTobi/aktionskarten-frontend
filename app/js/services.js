@@ -88,9 +88,14 @@ mapApp
       };
 
       this.generateMarker = function(point, orientation, gridName) {
+        var anchors = [0, 0];
+        if (orientation == 'east' || orientation == 'south') {
+          anchors = [12,12];
+        }
         var icon = L.divIcon({
           className:'grid_name '+orientation,
-          html:gridName
+          html:gridName,
+          iconAnchor: anchors
         });
         // add to featureGroup
         return L.marker(
