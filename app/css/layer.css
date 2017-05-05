@@ -1,7 +1,7 @@
 .border-layer {
   fill-opacity: 0;
   stroke: #dd557b;
-  stroke-width: 10px;
+  stroke-width: 24px;
   stroke-opacity: 1;
   stroke-linejoin: miter;
 }
@@ -9,4 +9,12 @@
 .grid_name {
  text-align: center;
  font-size: 9px;
+}
+
+.leaflet-control-container .leaflet-top {
+  margin-top: 5px;
+}
+
+.leaflet-control-container .leaflet-left {
+  margin-left: 5px;
 }

@@ -27,7 +27,8 @@ div.ng-scope {
   right: 0;
   bottom: 0;
   top: 50px;
-  margin: 15px;
+  width: 210mm;
+  height: 297mm;
 
   /* needed for chrome in mobile version */
   z-index: 100;
@@ -56,4 +57,8 @@ div.ng-scope {
 
 .leaflet-styleeditor-tooltip-wrapper {
   z-index: 2000;
+}
+
+.leaflet-control-layers {
+  display: none
 }
