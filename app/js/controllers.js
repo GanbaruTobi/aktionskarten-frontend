@@ -96,8 +96,7 @@ mapApp.controller('MapCtrl',
               gridLayer.bringToBack();
             }
             if (borderLayer) {
-              features.addLayer(borderLayer);
-              //borderLayer.bringToBack();
+              map.addLayer(borderLayer);
             }
           });
 
@@ -133,6 +132,20 @@ mapApp.controller('MapCtrl',
           // add our features to map and update on changes
           leafletData.getMap().then(function(map) {
             map.addLayer(features);
+            map.on('move', function(e) {
+              // regenerate grid
+              map.removeLayer(gridLayer);
+              var bbox = map.getBounds().toBBoxString().split(',').map(parseFloat);
+              gridLayer = grid.generateGridOverlay(bbox);
+              map.addLayer(gridLayer);
+              gridLayer.bringToBack();
+              borderLayer.setBounds(map.getBounds());
+
+              // save new bbox in backend
+              var geo = JSON.stringify(borderLayer.toGeoJSON().geometry);
+              $scope.restMap.patch({bbox: geo});
+
+            });
             map.on('draw:created', function (e) {
               var geo = JSON.stringify(e.layer.toGeoJSON().geometry);
               var postData = {geo: geo, map: $scope.mapName};
@@ -160,22 +173,10 @@ mapApp.controller('MapCtrl',
               //save edited layers
               e.layers.eachLayer(function(layer){
                 var geo = JSON.stringify(layer.toGeoJSON().geometry);
-                if (layer.bbox) {
-                  // bbox has been edited
-                  $scope.restMap.patch({bbox: geo});
-
-                  // regenerate grid layer
-                  map.removeLayer(gridLayer);
-                  var bbox = layer.getBounds().toBBoxString().split(',').map(parseFloat);
-                  gridLayer = grid.generateGridOverlay(bbox);
-                  map.addLayer(gridLayer);
-                  gridLayer.bringToBack();
-                } else {
-                  var patchData ={geo: geo, map: $scope.mapName};
-                  if (layer.getRadius)
-                    patchData.radius = layer.getRadius();
-                  $scope.restMap.one('features', layer.id).patch(patchData);
-                }
+                var patchData ={geo: geo, map: $scope.mapName};
+                if (layer.getRadius)
+                  patchData.radius = layer.getRadius();
+                $scope.restMap.one('features', layer.id).patch(patchData);
               });
 
             });
@@ -227,7 +228,7 @@ mapApp.controller('MapCtrl',
             map.on('draw:created', function (e) {
               var geo = JSON.stringify(e.layer.toGeoJSON().geometry);
               mapsApi.post({
-                name: $scope.mapName, 
+                name: $scope.mapName,
                 bbox: geo,
                 public: $scope.mapPublic,
                 editable: $scope.mapEditable
@@ -262,7 +263,7 @@ mapApp.controller('MapCtrl',
           map.on('draw:created', function (e) {
             var geo = JSON.stringify(e.layer.toGeoJSON().geometry);
             mapsApi.post({
-              name: $scope.mapName, 
+              name: $scope.mapName,
               bbox: geo,
               public: $scope.mapPublic,
               editable: $scope.mapEditable
