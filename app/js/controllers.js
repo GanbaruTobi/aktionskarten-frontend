@@ -132,7 +132,7 @@ mapApp.controller('MapCtrl',
           // add our features to map and update on changes
           leafletData.getMap().then(function(map) {
             map.addLayer(features);
-            map.on('move', function(e) {
+            map.on('move', function() {
               // regenerate grid
               map.removeLayer(gridLayer);
               var bbox = map.getBounds().toBBoxString().split(',').map(parseFloat);
