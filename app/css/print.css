@@ -12,7 +12,8 @@
     margin: 0;
 }
 
-.noprint {
+.noprint,
+.leaflet-control {
   display: none;
 }
 
