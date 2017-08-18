@@ -77,7 +77,7 @@ mapApp.controller('MapCtrl',
           // generate Bbox layer
           borderLayer = L.rectangle(
             [[$scope.bounds.southWest.lat, $scope.bounds.southWest.lng],
-            [$scope.bounds.northEast.lat, $scope.bounds.northEast.lng]],
+              [$scope.bounds.northEast.lat, $scope.bounds.northEast.lng]],
             {
               className: 'border-layer'
             }
@@ -113,8 +113,8 @@ mapApp.controller('MapCtrl',
                 // check if feature is a circle
                 if (feature.properties && feature.properties.radius) {
                   layer = L.circle(layer.getLatLng(),
-                            feature.properties.radius,
-                            feature.properties
+                    feature.properties.radius,
+                    feature.properties
                   );
                 }
                 layer.id = feature.id;

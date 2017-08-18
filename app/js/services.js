@@ -11,7 +11,7 @@ mapApp
       this.getBounds = function(bbox) {
         var bounds = leafletBoundsHelpers.createBoundsFromArray(
           [[bbox[3], bbox[2]],
-          [bbox[1], bbox[0]]]
+            [bbox[1], bbox[0]]]
         );
         if (bounds.southWest.lng > bounds.northEast.lng ||
             bounds.southWest.lat > bounds.northEast.lat)
