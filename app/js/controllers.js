@@ -111,10 +111,9 @@ mapApp.controller('MapCtrl',
               },
               onEachFeature : function(feature, layer) {
                 // check if feature is a circle
-                if (feature.properties && feature.properties.radius) {
+                if (feature.properties && feature.properties.style && feature.properties.style.radius) {
                   layer = L.circle(layer.getLatLng(),
-                    feature.properties.radius,
-                    feature.properties
+                    feature.properties.style.radius
                   );
                 }
                 layer.id = feature.id;
@@ -150,11 +149,11 @@ mapApp.controller('MapCtrl',
               var geo = JSON.stringify(e.layer.toGeoJSON().geometry);
               var postData = {geo: geo, map: $scope.mapName};
 
-              // if the layer is a circle save radius to properties
-              if (e.layer.getRadius)
-                postData.radius = e.layer.getRadius();
-
               var style = {};
+              // if the layer is a circle save radius to style
+              if (e.layer.getRadius)
+                style.radius = e.layer.getRadius();
+
               for (var k in e.layer.options) {
                 if (validStyleKeys.indexOf(k) >= 0 && !!e.layer.options[k]) {
                   style[k] = e.layer.options[k];
@@ -173,9 +172,9 @@ mapApp.controller('MapCtrl',
               //save edited layers
               e.layers.eachLayer(function(layer){
                 var geo = JSON.stringify(layer.toGeoJSON().geometry);
-                var patchData ={geo: geo, map: $scope.mapName};
+                var patchData ={geo: geo, map: $scope.mapName, style: {}};
                 if (layer.getRadius)
-                  patchData.radius = layer.getRadius();
+                  patchData.style.radius = layer.getRadius();
                 $scope.restMap.one('features', layer.id).patch(patchData);
               });
 

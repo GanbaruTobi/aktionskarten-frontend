@@ -17,6 +17,6 @@ mapApp
   })
   .constant(
     'validStyleKeys', [
-      'color', 'weight', 'opacity', 'fillColor', 'fillOpacity', 'dashArray'
+      'color', 'weight', 'opacity', 'fillColor', 'fillOpacity', 'dashArray', 'radius'
     ]
   );
