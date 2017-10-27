@@ -36,11 +36,31 @@
 
     <script>
       var map = L.map('map'),
-          url ='http://localhost:5000/api/maps/1'
-          features = new L.FeatureGroup();
+          url ='http://192.168.1.130:5000/api/maps/1';
 
       // Map features (editable through Leaflet.Draw and Leaflet.StyleEditor)
-      map.addLayer(features);
+      // normally a FeatureGroup but GeoJSON extends FeatureGroup and populate
+      // with geojson data
+      var features = new L.geoJSON(null, {
+          // copies style and id to feature.options
+          style: (f) => f.properties,
+          pointToLayer: (feature, latlng) => {
+              if (feature.properties.radius) {
+                return L.circle(latlng,
+                  feature.properties.radius,
+                  feature.properties
+                );
+              }
+              return L.marker(latlng, {icon: L.icon({
+                iconSize: feature.properties.iconSize,
+                iconUrl: feature.properties.iconUrl,
+                iconColor: feature.properties.iconColor
+              })});
+          },
+          onEachFeature: (feature, layer) => {
+            layer.id = feature.properties.id;
+          }
+      }).addTo(map);
 
       // add Leaflet.StyleEditor
       map.addControl(L.control.styleEditor({
@@ -81,9 +101,9 @@
 
       // center map
       get(url).then(function(data) {
-          var bbox = data.bbox
-          bbox.reverse()
-          map.fitBounds([bbox.slice(0,2), bbox.slice(2,4)]);
+          var a = L.GeoJSON.coordsToLatLng(data.bbox.slice(0,2)),
+              b = L.GeoJSON.coordsToLatLng(data.bbox.slice(2,4));
+          map.fitBounds([a, b]);
         })
 
       // add tiles
@@ -94,42 +114,14 @@
           '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> '
       }).addTo(map);
 
-      // add grid
+      // add static grid
       get(url + '/grid').then(function(data) {
         L.geoJSON(data, {style: (f) => f.properties}).addTo(map);
       })
 
       // add features
       get(url + '/features').then(function(data) {
-        L.geoJSON(data, {
-          // copies style and id to feature.options
-          style: (f) => f.properties,
-
-          // save each feature in our FeatureGroup, sadly we can't use
-          // L.geoJSON itself in combination with Leaflet.Draw
-          onEachFeature: (feature, layer) => {
-            // check if feature is a circle
-            if (feature.geometry.type == "Point") {
-              if (feature.properties.radius) {
-                layer = L.circle(layer.getLatLng(),
-                          feature.properties.radius,
-                          feature.properties
-                );
-              } else {
-                let latlng = feature.geometry.coordinates;
-                latlng.reverse()
-                layer = L.marker(latlng, {icon: L.icon({
-                  iconSize: feature.properties.iconSize,
-                  iconUrl: feature.properties.iconUrl,
-                  iconColor: feature.properties.iconColor
-                })});
-              }
-            }
-
-            layer.id = feature.properties.id;
-            features.addLayer(layer);
-          }
-        })
+        features.addData(data);
       })
 
 
@@ -153,9 +145,7 @@
         post(url + '/features', geo)
           .then(function(data) {
             console.log("Added layer", data);
-
-            e.layer.id = data.properties.id;
-            features.addLayer(e.layer);
+            features.addData(geo);
           })
       });
 
