@@ -7,8 +7,6 @@
       }
     </style>
 
-    <!-- Helper functions for HTTP-Request and other stuff -->
-    <script src="utils.js"></script>
   </head>
   <body>
     <div id="app" style="height: 100%">
@@ -20,64 +18,93 @@
     </div>
   </body>
 
+   <!-- Helper functions for HTTP-Request and other stuff -->
+  <script src="utils.js"></script>
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js" ></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.js" ></script>
   <script src="https://unpkg.com/vue2-leaflet@0.0.45/dist/vue2-leaflet.js" ></script>
   <script>
+
 Vue.component('v-map', Vue2Leaflet.Map);
 Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
 Vue.component('v-geojson', Vue2Leaflet.GeoJSON);
 
 var app = new Vue({
   el: '#app',
-  data () {
-      return {
-        mapUrl: 'http://localhost:5000/api/maps/1',
-        url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-        attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        grid: null,
-        gridOptions: {
-          style: (f) => f.properties
-        },
-        features: [],
-        featureOptions: {
-          style: (f) => f.properties,
-          pointToLayer: (feature, latlng) => {
-              if (feature.properties.radius) {
-                return L.circle(latlng,
-                  feature.properties.radius,
-                  feature.properties
-                );
-              }
-              return L.marker(latlng, {icon: L.icon({
-                iconSize: feature.properties.iconSize,
-                iconUrl: feature.properties.iconUrl,
-                iconColor: feature.properties.iconColor
-              })});
-          },
-          onEachFeature: (feature, layer) => {
-            layer.id = feature.properties.id;
+  data() {
+    return {
+      baseUrl: 'http://localhost:5000/api/maps/',
+      mapId: null,
+      url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      bounds: null,
+      grid: null,
+      gridOptions: {
+        style(f) { return f.properties },
+      },
+      features: [],
+      featureOptions: {
+        style(f) { return f.properties },
+        pointToLayer(feature, latlng) {
+          if (feature.properties.radius) {
+            return L.circle(latlng,
+              feature.properties.radius,
+              feature.properties
+            );
           }
+
+          try {
+            return L.marker(latlng, {icon: L.icon(feature.properties)});
+          } catch (err) { console.log(err); }
+          return L.marker(latlng);
+        },
+        onEachFeature(feature, layer) {
+          layer.id = feature.properties.id;
         }
       }
-    },
-  mounted: function () {
+    }
+  },
+
+  computed: {
+    mapUrl() { return this.baseUrl + this.mapId }
+  },
+
+  watch: {
     // center map
-    get(this.mapUrl).then((data) => {
-      var a = L.GeoJSON.coordsToLatLng(data.bbox.slice(0,2)),
-          b = L.GeoJSON.coordsToLatLng(data.bbox.slice(2,4));
-      this.$refs.map.fitBounds([a, b]);
-    })
+    bounds(newBounds) {
+      this.$refs.map.fitBounds(newBounds);
+    },
 
-    // load grid
-    get(this.mapUrl + '/grid').then((grid) => {
-      this.grid = grid;
-    })
+    mapId(newMapId) {
+      this.loadMap();
+    }
+  },
 
-    // load features
-    get(this.mapUrl + '/features').then((data) => {
-      this.features = data;
-    })
+  methods: {
+    loadMap() {
+      // get bounds of map
+      get(this.mapUrl).then((data) => {
+        var a = L.GeoJSON.coordsToLatLng(data.bbox.slice(0,2)),
+            b = L.GeoJSON.coordsToLatLng(data.bbox.slice(2,4));
+        this.bounds = [a, b]
+      })
+
+      // load grid
+      this.grid = [];
+      get(this.mapUrl + '/grid').then((grid) => {
+        this.grid = grid;
+      })
+
+      // load features
+      this.features = [];
+      get(this.mapUrl + '/features').then((data) => {
+        this.features = data;
+      })
+    }
+  },
+
+  mounted() {
+    this.mapId = 1;
   }
 });
   </script>
