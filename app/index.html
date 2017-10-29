@@ -45,17 +45,17 @@
           // copies style and id to feature.options
           style: (f) => f.properties,
           pointToLayer: (feature, latlng) => {
-              if (feature.properties.radius) {
-                return L.circle(latlng,
-                  feature.properties.radius,
-                  feature.properties
-                );
-              }
-              return L.marker(latlng, {icon: L.icon({
-                iconSize: feature.properties.iconSize,
-                iconUrl: feature.properties.iconUrl,
-                iconColor: feature.properties.iconColor
-              })});
+            if (feature.properties.radius) {
+              return L.circle(latlng,
+                feature.properties.radius,
+                feature.properties
+              );
+            }
+
+            try {
+              return L.marker(latlng, {icon: L.icon(feature.properties)});
+            } catch (err) { console.log(err); }
+            return L.marker(latlng);
           },
           onEachFeature: (feature, layer) => {
             layer.id = feature.properties.id;
@@ -72,7 +72,7 @@
       // add Leaflet.Draw
       map.addControl(new L.Control.Draw({
           edit: {
-              featureGroup: features,
+              featureGroup: features, // only allow features to be editable
           }
       }));
 
