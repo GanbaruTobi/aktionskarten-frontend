@@ -76,6 +76,7 @@
           },
           onEachFeature: (feature, layer) => {
             layer.id = feature.properties.id;
+            console.log('new feature', layer);
           }
       }).addTo(map);
 
@@ -193,7 +194,7 @@
           delete style['dashArray']
         }
 
-        console.log(e)
+        console.log(e, e.id)
         var id = e.id;
         patch(url + '/features/' + id, {'style': style})
           .then(function(data) {
