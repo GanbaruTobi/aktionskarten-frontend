@@ -155,7 +155,8 @@
         post(url + '/features', geo)
           .then(function(data) {
             console.log("Added layer", data);
-            features.addData(geo);
+            e.layer.id = data.properties.id
+            features.addData(data);
           })
       });
 
