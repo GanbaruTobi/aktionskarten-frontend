@@ -43,7 +43,7 @@ function del(url, data) {
 }
 
 function getStyle(options) {
-  var validKeys = ['color', 'weight', 'opacity', 'fillColor', 'fillOpacity', 'dashArray', 'icon.options.iconColor', 'icon.options.iconSize', 'icon.options.iconUrl'],
+  var validKeys = ['color', 'weight', 'opacity', 'fillColor', 'fillOpacity', 'dashArray', 'icon.options.iconColor', 'icon.options.iconSize', 'icon.options.icon'],
       style = {};
 
   validKeys.forEach(function(item) {
