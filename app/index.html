@@ -23,6 +23,8 @@
     <script src="https://kartographischeaktion.github.io/AktionskartenMarker/AktionskartenMarker.js"></script>
     <link rel="stylesheet" href="https://kartographischeaktion.github.io/AktionskartenMarker/AktionskartenMarker.css" />
 
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
     <!-- Helper functions for HTTP-Request and other stuff -->
     <script src="utils.js"></script>
 
@@ -57,8 +59,35 @@
 
       // Map features (editable through Leaflet.Draw and Leaflet.StyleEditor)
       // normally a FeatureGroup but GeoJSON extends FeatureGroup and populate
-      // with geojson data
-      var features = new L.geoJSON(null, {
+      // with geojson data. Custom methods need to be added here
+      var FeatureLayer = L.GeoJSON.extend({
+          addFeature(data) {
+            var exists = false;
+            this.eachLayer((layer) => {
+              if (data.properties.id == layer.id) {
+                exists = true;
+              }
+            })
+
+            // already exists for client who created the feature
+            if (!exists) {
+              addData(data);
+            }
+          },
+          updateFeature(data) {
+            this.deleteFeature(data.properties.id);
+            this.addData(data);
+          },
+          deleteFeature(id) {
+            this.eachLayer((layer) => {
+              if (id == layer.id) {
+                this.removeLayer(layer);
+              }
+            })
+          }
+      });
+
+      var features = new FeatureLayer(null, {
           // copies style and id to feature.options
           style: (f) => f.properties,
           pointToLayer: (feature, latlng) => {
@@ -77,8 +106,7 @@
           onEachFeature: (feature, layer) => {
             layer.id = feature.properties.id;
             console.log('new feature', layer);
-          }
-      }).addTo(map);
+          } }).addTo(map);
 
       // add Leaflet.Draw
       map.addControl(new L.Control.Draw({
@@ -115,6 +143,8 @@
           var a = L.GeoJSON.coordsToLatLng(data.bbox.slice(0,2)),
               b = L.GeoJSON.coordsToLatLng(data.bbox.slice(2,4));
           map.fitBounds([a, b]);
+
+          socket.emit('join', data.id);
         })
 
       // add tiles
@@ -200,6 +230,28 @@
           .then(function(data) {
             console.log("Changed style of " + id);
           })
+      });
+
+      //
+      // Live changes from other clients
+      //
+      var socket = io.connect('http://localhost:5000');
+      socket.on('connect', function() {
+        console.log('connected')
+      });
+      socket.on('created', function(data) {
+        console.log('event create', data);
+        features.addFeature(data);
+      });
+
+      socket.on('updated', function(data) {
+        console.log('event update', data);
+        features.updateFeature(data);
+      });
+
+      socket.on('deleted', function(data) {
+        console.log('event deleted', data);
+        features.deleteFeature(data.properties.id);
       });
     </script>
   </body>
