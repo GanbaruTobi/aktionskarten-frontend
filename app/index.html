@@ -41,7 +41,10 @@
     <div id='map'></div>
 
     <script>
-      var map = L.map('map'),
+      var map = L.map('map', {
+                  maxBoundsViscosity: 1.0,
+                  zoomSnap: 0.8
+                }),
           url ='https://maps.kombinat451.org/api/maps/1';
 
       // add Leaflet.StyleEditor
@@ -143,6 +146,7 @@
           var a = L.GeoJSON.coordsToLatLng(data.bbox.slice(0,2)),
               b = L.GeoJSON.coordsToLatLng(data.bbox.slice(2,4));
           map.fitBounds([a, b]);
+          map.setMaxBounds([a, b]);
 
           socket.emit('join', data.id);
         })
