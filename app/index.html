@@ -194,7 +194,7 @@
       map.on(L.Draw.Event.EDITED, function (e) {
         var layers = e.layers;
         layers.eachLayer(function (layer) {
-          var id = layer.options.id;
+          var id = layer.id;
           put(url + '/features/' + id, layer.toGeoJSON().geometry)
             .then(function(data) {
               console.log("edited " + id);
