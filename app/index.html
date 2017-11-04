@@ -45,7 +45,8 @@
                   maxBoundsViscosity: 1.0,
                   zoomSnap: 0.8
                 }),
-          url ='https://maps.kombinat451.org/api/maps/1';
+          url = 'https://maps.kombinat451.org/'
+          apiUrl = url + '/api/maps/1';
 
       // add Leaflet.StyleEditor
       var styleEditor = L.control.styleEditor({
@@ -132,7 +133,7 @@
           container.style.backgroundPosition = "center";
 
           container.onclick = function(){
-            window.open(url+'/export/pdf');
+            window.open(apiUrl+'/export/pdf');
           }
 
           return container;
@@ -141,7 +142,7 @@
       map.addControl(new ExportControl());
 
       // center map
-      get(url).then(function(data) {
+      get(apiUrl).then(function(data) {
           var a = L.GeoJSON.coordsToLatLng(data.bbox.slice(0,2)),
               b = L.GeoJSON.coordsToLatLng(data.bbox.slice(2,4));
           map.fitBounds([a, b]);
@@ -159,12 +160,12 @@
       }).addTo(map);
 
       // add static grid
-      get(url + '/grid').then(function(data) {
+      get(apiUrl + '/grid').then(function(data) {
         L.geoJSON(data, {style: (f) => f.properties}).addTo(map);
       })
 
       // add features
-      get(url + '/features').then(function(data) {
+      get(apiUrl + '/features').then(function(data) {
         features.addData(data);
       })
 
@@ -186,7 +187,7 @@
           }
         }
 
-        post(url + '/features', geo)
+        post(apiUrl + '/features', geo)
           .then(function(data) {
             console.log("Added layer", data);
             e.layer.id = data.properties.id
@@ -198,7 +199,7 @@
         var layers = e.layers;
         layers.eachLayer(function (layer) {
           var id = layer.id;
-          put(url + '/features/' + id, layer.toGeoJSON().geometry)
+          put(apiUrl + '/features/' + id, layer.toGeoJSON().geometry)
             .then(function(data) {
               console.log("edited " + id);
           })
@@ -210,7 +211,7 @@
         layers.eachLayer(function (layer) {
           console.log(layer)
           var id = layer.id;
-          del(url + '/features/' + id, layer.toGeoJSON().geometry)
+          del(apiUrl + '/features/' + id, layer.toGeoJSON().geometry)
             .then(function(data) {
               console.log("deleted " + id);
           })
@@ -229,7 +230,7 @@
 
         console.log(e, e.id)
         var id = e.id;
-        patch(url + '/features/' + id, {'style': style})
+        patch(apiUrl + '/features/' + id, {'style': style})
           .then(function(data) {
             console.log("Changed style of " + id);
           })
@@ -238,7 +239,7 @@
       //
       // Live changes from other clients
       //
-      var socket = io.connect('http://localhost:5000');
+      var socket = io.connect(url);
       socket.on('connect', function() {
         console.log('connected')
       });
@@ -256,6 +257,28 @@
         console.log('event deleted', data);
         features.deleteFeature(data.properties.id);
       });
+
+    //var evtSource = new EventSource('http://localhost:5000/api/maps/1/live');
+
+    //evtSource.onopen = function() {
+    //  console.log("Connection to server opened.");
+    //};
+    //evtSource.addEventListener('created', function(e) {
+    //  console.log('event create', e.data);
+    //  var data = JSON.parse(e.data);
+    //  features.addData(data);
+    //});
+    //evtSource.addEventListener('updated', function(e) {
+    //  console.log('event updated', e.data);
+    //  var data = JSON.parse(e.data);
+    //  features.deleteFeature(data.properties.id);
+    //  features.addData(data);
+    //});
+    //evtSource.addEventListener('deleted', function(e) {
+    //  console.log('event deleted', e.data);
+    //  var data = JSON.parse(e.data);
+    //  features.deleteFeature(data.properties.id);
+    //});
     </script>
   </body>
 </html>
